@@ -1,8 +1,8 @@
 require 'formula'
 
 class Lsusb < Formula
-  homepage 'https://github.com/paulp/lsusb'
-  head 'https://github.com/paulp/lsusb', :using => :git
+  homepage 'https://github.com/jlhonora/lsusb'
+  head 'https://github.com/jlhonora/lsusb', :using => :git
 
   def install
     bin.install('lsusb')
