@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# subl [-d] <args for sublime>
+
+declare debug
+[[ $1 == -d ]] && shift && debug=true
+
+# Ah, the famed simplicity of OS X
+declare -r sublimeRoot="$(mdfind "kMDItemDisplayName=='Sublime Text' && kMDItemKind==Application")"
+declare -r sublime="$sublimeRoot/Contents/SharedSupport/bin/subl"
+declare -r pluginHost="$sublimeRoot/Contents/MacOS/plugin_host"
+
+log ()     { [[ $debug ]] && echo >&2 "$*"; true; }
+run ()     { log "% $@" && "$@"; }
+running () { ps -xo comm | fgrep -q "$pluginHost"; }
+execute () { exec "$sublime" -a "$@"; }
+
+checkRunning ()  {
+  if running; then
+    log "... plugin_host sighted."
+  else
+    log "... no plugin_host after $1 ms" && false
+  fi
+}
+
+if running; then
+  execute "$@"
+else
+  run "$sublime" </dev/null -n -s "$@" &
+  disown -har
+  # This allows 20 seconds for plugin_host to show up, which seems
+  # like a lot except I've seen 8800 ms on a macbook pro.
+  for i in {1..200}; do
+    sleep 0.1 && checkRunning "$(( i * 100 ))" && execute "$@"
+  done
+fi
+
+log "... gave up on plugin_host ever appearing."
+exit 1
