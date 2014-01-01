@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+#
+
+$:.unshift(ENV['BREW_PREFIX'] + '/Library/Homebrew')
+require 'global'
+require 'formula'
+
+Formula.installed.each do |f|
+  tab = Tab.for_formula(f)
+  opts = tab.used_options
+  printf("%-15s %s\n", f, opts.to_a.join(", ")) unless opts.empty?
+end
