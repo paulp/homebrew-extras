@@ -11,10 +11,27 @@ declare -r sublimeRoot="$(mdfind "$sublimeId")"
 declare -r sublime="$sublimeRoot/Contents/SharedSupport/bin/subl"
 declare -r pluginHost="$sublimeRoot/Contents/MacOS/plugin_host"
 
+slurpStdin () {
+  local tmpfile
+  case $(uname) in
+    Darwin) tmpfile="$(mktemp -t stdin)" ;;
+         *) tmpfile="$(mktemp -t stdin.XXXXXX)" ;;
+  esac
+
+  cat - >"$tmpfile"
+  echo "$tmpfile"
+}
+
 log ()     { [[ $debug ]] && echo >&2 "$*"; true; }
 run ()     { log "% $@" && "$@"; }
 running () { ps -xo comm | fgrep -q "$pluginHost"; }
-execute () { exec "$sublime" -a "$@"; }
+execute () {
+  if (( $# == 0 )); then
+    exec "$sublime" -a "$(slurpStdin)"
+  else
+    exec "$sublime" -a "$@";
+  fi
+}
 
 checkRunning ()  {
   if running; then
