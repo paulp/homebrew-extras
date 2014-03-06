@@ -6,7 +6,7 @@ declare debug
 [[ $1 == -d ]] && shift && debug=true
 
 # Ah, the famed simplicity of OS X
-declare -r sublimeId="kMDItemCFBundleIdentifier == 'com.sublimetext.*' && kMDItemKind==Application"
+declare -r sublimeId="kMDItemCFBundleIdentifier == 'com.sublimetext.*' && kMDItemContentType == com.apple.application-bundle"
 declare -r sublimeRoot="$(mdfind "$sublimeId")"
 declare -r sublime="$sublimeRoot/Contents/SharedSupport/bin/subl"
 declare -r pluginHost="$sublimeRoot/Contents/MacOS/plugin_host"
