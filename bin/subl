@@ -6,7 +6,7 @@ declare debug
 [[ $1 == -d ]] && shift && debug=true
 
 # Ah, the famed simplicity of OS X
-declare -r sublimeId="kMDItemCFBundleIdentifier == 'com.sublimetext.*' && kMDItemKind==Application"
+declare -r sublimeId="kMDItemCFBundleIdentifier == 'com.sublimetext.*' && kMDItemContentType == com.apple.application-bundle"
 declare -r sublimeRoot="$(mdfind "$sublimeId")"
 declare -r sublime="$sublimeRoot/Contents/SharedSupport/bin/subl"
 declare -r pluginHost="$sublimeRoot/Contents/MacOS/plugin_host"
@@ -27,9 +27,9 @@ run ()     { log "% $@" && "$@"; }
 running () { ps -xo comm | fgrep -q "$pluginHost"; }
 execute () {
   if (( $# == 0 )); then
-    exec "$sublime" -a "$(slurpStdin)"
+    exec "$sublime" "$(slurpStdin)"
   else
-    exec "$sublime" -a "$@";
+    exec "$sublime" "$@";
   fi
 }
 
