@@ -27,9 +27,9 @@ run ()     { log "% $@" && "$@"; }
 running () { ps -xo comm | fgrep -q "$pluginHost"; }
 execute () {
   if (( $# == 0 )); then
-    exec "$sublime" -a "$(slurpStdin)"
+    exec "$sublime" "$(slurpStdin)"
   else
-    exec "$sublime" -a "$@";
+    exec "$sublime" "$@";
   fi
 }
 
