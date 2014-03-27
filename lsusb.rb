@@ -6,10 +6,6 @@ class Lsusb < Formula
 
   def install
     bin.install('lsusb')
-    man1.install('man/lsusb.1')
-  end
-
-  test do
-    system "true"
+    man8.install('man/lsusb.8')
   end
 end
