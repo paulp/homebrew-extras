@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+
+generateFormula () {
+  local suffix="$1"
+  local version="$2"
+  local sha="$3"
+  local dir="$(mktemp -dt brew)"
+  local formula="$dir/scala$suffix.rb"
+  local content="$(cat <<EOM
+require 'formula'
+
+class Scala$suffix < Formula
+  homepage  'http://www.scala-lang.org/'
+  url       "http://www.scala-lang.org/files/archive/scala-$version.tgz"
+  sha256    '$sha'
+  version   '$version'
+
+  def install
+    rm_f Dir["bin/*.bat"]
+    libexec.install Dir['*']
+    ['scala', 'scalac'].each do |cmd|
+      renamed = "#{libexec}/bin/#{cmd}$suffix"
+      ln_s "#{libexec}/bin/#{cmd}", renamed
+      bin.install_symlink renamed
+    end
+  end
+end
+EOM
+)"
+
+  printf "%s\n" "$content" > "$formula"
+  brew install "$formula"
+}
+
+generateFormula 29   2.9.3 faaab229f78c945063e8fd31c045bc797c731194296d7a4f49863fd87fc4e7b9
+generateFormula 210 2.10.4 b46db638c5c6066eee21f00c447fc13d1dfedbfb60d07db544e79db67ba810c3

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#
+# A wrapper for brew and brew cask.
+#
+
+Brew=/usr/local/bin/brew # hard to avoid hardcoding path if we want to call this "brew"
+Cask="$Brew cask"
+CaskRegex="^ [-] ([a-z]*):.*"
+
+brewCommands () { $Brew commands | egrep -v commands$ | sort -u; }
+caskCommands () { $Cask | perl -ne '/^ [-] ([a-z]+):/ && print "$1\n";' | sort; }
+allCommands ()  { ( brewCommands && caskCommands ) | sort -u | awk NF | par; }
+
+provides () {
+  for b in $($Brew list); do
+    for f in $($Brew list --verbose $b | egrep "$1"); do
+      printf "%-20s  %s\n" "$b" "$f"
+    done
+  done
+}
+
+# [[ $# -eq 0 ]] && allCommands && exit 0
+
+case "$1" in
+                             "") printf "Usage: $(basename $0) [options] where options include:\n\n" && allCommands ;;
+                          files) shift && [[ $# -gt 0 ]] && $Brew list --verbose "$@" ;;
+                       provides) shift && [[ $# -gt 0 ]] && provides "$@" ;;
+                         relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
+                         search) shift && ( $Brew search ; $Cask search ) | ack "$@" | sort -u ;;
+                             up) shift && $Brew update "$@" && $Brew upgrade "$@" ;;
+   audit|cleanup|dr|doctor|list) $Brew "$@" ; echo "" ; $Cask "$@" ;;
+  fetch|home|info|edit|*install) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
+              alfred|checklinks) $Cask "$@" ;;
+                              *) $Brew "$@" ;;
+esac
