@@ -7,19 +7,26 @@ Brew=/usr/local/bin/brew # hard to avoid hardcoding path if we want to call this
 Cask="$Brew cask"
 CaskRegex="^ [-] ([a-z]*):.*"
 
-brewCommands () { $Brew commands | egrep -v commands$ | sort -u; }
+brewCommands () { $Brew commands | egrep -v commands$ | sort; }
 caskCommands () { $Cask | perl -ne '/^ [-] ([a-z]+):/ && print "$1\n";' | sort; }
-allCommands ()  { ( brewCommands && caskCommands ) | sort -u | awk NF | par; }
+allCommands ()  { { brewCommands && caskCommands; } | sort -u | awk NF | column; }
 
 provides () {
-  for b in $($Brew list); do
-    for f in $($Brew list --verbose $b | egrep "$1"); do
-      printf "%-20s  %s\n" "$b" "$f"
-    done
+  local cellar="$(brew --cellar)"
+  cd "$cellar"
+  find * -type f -name "$1" | while read path; do
+    printf "%-20s %s\n" "${path%%/*}" "$cellar/$path"
   done
 }
 
-# [[ $# -eq 0 ]] && allCommands && exit 0
+list () {
+  if [[ $# -eq 0 ]]; then
+    # brew cask list takes about 4 seconds to complete, ls -1 .001 seconds.
+    { $Brew list | cat && ls -1 /opt/homebrew-cask/Caskroom; } | sort | column
+  else
+    $Brew list "$@" && $Cask "$@" | sort
+  fi
+}
 
 case "$1" in
                              "") printf "Usage: $(basename $0) [options] where options include:\n\n" && allCommands ;;
@@ -28,7 +35,8 @@ case "$1" in
                          relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
                          search) shift && ( $Brew search ; $Cask search ) | ack "$@" | sort -u ;;
                              up) shift && $Brew update "$@" && $Brew upgrade "$@" ;;
-   audit|cleanup|dr|doctor|list) $Brew "$@" ; echo "" ; $Cask "$@" ;;
+                           list) shift && list "$@" ;;
+        audit|cleanup|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
   fetch|home|info|edit|*install) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
               alfred|checklinks) $Cask "$@" ;;
                               *) $Brew "$@" ;;
