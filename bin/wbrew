@@ -34,7 +34,7 @@ case "$1" in
                        provides) shift && [[ $# -gt 0 ]] && provides "$@" ;;
                          relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
                          search) shift && ( $Brew search ; $Cask search ) | ack "$@" | sort -u ;;
-                             up) shift && $Brew update "$@" && $Brew upgrade "$@" ;;
+                             up) shift && $Brew update "$@" && $Brew upgrade --all "$@" ;;
                            list) shift && list "$@" ;;
         audit|cleanup|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
   fetch|home|info|edit|*install) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
