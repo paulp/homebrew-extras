@@ -3,7 +3,7 @@
 # A wrapper for brew and brew cask.
 #
 
-Brew=/usr/local/bin/brew # hard to avoid hardcoding path if we want to call this "brew"
+Brew="$(which brew)"
 Cask="$Brew cask"
 CaskRegex="^ [-] ([a-z]*):.*"
 
