@@ -19,15 +19,6 @@ provides () {
   done
 }
 
-list () {
-  if [[ $# -eq 0 ]]; then
-    # brew cask list takes about 4 seconds to complete, ls -1 .001 seconds.
-    { $Brew list | cat && ls -1 /opt/homebrew-cask/Caskroom; } | sort | column
-  else
-    $Brew list "$@" && $Cask "$@" | sort
-  fi
-}
-
 install () {
   $Brew options "$@"
   $Brew install "$@" 2>/dev/null || $Cask install "$@" 2>/dev/null
@@ -39,8 +30,8 @@ case "$1" in
                provides) shift && [[ $# -gt 0 ]] && provides "$@" ;;
                  relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
                  search) shift && ( $Brew search ; $Cask search ) | ack "$@" | sort -u ;;
-                     up) shift && $Brew update "$@" && $Brew upgrade --all "$@" ;;
-                   list) shift && list "$@" ;;
+                     up) shift ; $Brew update --all ; $Cask ls | xargs $Cask install 2>/dev/null ;;
+                     ls) shift && ( $Brew ls | sort && echo && $Cask ls | sort ) ;;
                 install) shift && install "$@" ;;
 audit|cleanup|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
    fetch|home|info|edit) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
