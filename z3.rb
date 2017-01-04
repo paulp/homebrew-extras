@@ -1,9 +1,10 @@
 class Z3 < Formula
   desc "High-performance theorem prover"
   homepage "https://github.com/Z3Prover/z3"
-  url "https://github.com/Z3Prover/z3/archive/z3-4.4.1.tar.gz"
-  sha256 "50967cca12c5c6e1612d0ccf8b6ebf5f99840a783d6cf5216336a2b59c37c0ce"
+  url "https://github.com/Z3Prover/z3/archive/z3-4.5.0.tar.gz"
+  sha256 "aeae1d239c5e06ac183be7dd853775b84698db1265cb2258e5918a28372d4a0c"
   head "https://github.com/Z3Prover/z3.git"
+
   depends_on :java => "1.7+"
 
   def install
@@ -12,6 +13,7 @@ class Z3 < Formula
       system "make"
       system "make", "install"
     end
+
     pkgshare.install "examples"
   end
 
