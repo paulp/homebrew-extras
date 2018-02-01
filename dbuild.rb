@@ -1,10 +1,10 @@
 class Dbuild < Formula
   desc "distributed build tool for scala"
-  homepage "http://typesafehub.github.io/dbuild"
-  url "http://repo.typesafe.com/typesafe/ivy-releases/com.typesafe.dbuild/dbuild/0.9.5/tgzs/dbuild-0.9.5.tgz"
-  sha256 "bba3628c7d66c3b192bae499dd6a91a3ad2f9c86d82a3ab3a976291b5cb810b1"
-  version "0.9.5"
-  depends_on :java => "1.7+"
+  homepage "http://lightbend.github.io/dbuild"
+  url "http://repo.typesafe.com/typesafe/ivy-releases/com.typesafe.dbuild/dbuild/0.9.9/tgzs/dbuild-0.9.9.tgz"
+  sha256 "1ce11ee0e60204fe83184b8df0ad45a545ff6409faaa281f1f1986540b3cdac2"
+  version "0.9.9"
+  depends_on :java => "1.8+"
 
   def install
     libexec.install Dir["*"]
