@@ -1,11 +1,11 @@
 class Z3 < Formula
   desc "High-performance theorem prover (built with java bindings enabled)"
   homepage "https://github.com/Z3Prover/z3"
-  url "https://github.com/Z3Prover/z3/archive/z3-4.6.0.tar.gz"
-  sha256 "511da31d1f985cf0c79b2de05bda4e057371ba519769d1546ff71e1304fe53c9"
+  url "https://github.com/Z3Prover/z3/releases/download/z3-4.7.1/z3-4.7.1.tar.gz"
+  sha256 "d165d68739ee15b4b73c0498225982d5a048e909e5e851b73fa6bcc7cfe228ab"
   head "https://github.com/Z3Prover/z3.git"
 
-  depends_on :java => "1.7+"
+  depends_on :java => "1.8+"
 
   def install
     system "python", "scripts/mk_make.py", "--prefix=#{prefix}", "--staticlib", "--java"
