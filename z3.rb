@@ -5,7 +5,7 @@ class Z3 < Formula
   sha256 "d165d68739ee15b4b73c0498225982d5a048e909e5e851b73fa6bcc7cfe228ab"
   head "https://github.com/Z3Prover/z3.git"
 
-  depends_on :java => "1.8+"
+  depends_on :java => "1.8"
 
   def install
     system "python", "scripts/mk_make.py", "--prefix=#{prefix}", "--staticlib", "--java"
