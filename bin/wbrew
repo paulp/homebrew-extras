@@ -9,7 +9,7 @@ CaskRegex="^ [-] ([a-z]*):.*"
 
 brewCommands () { $Brew commands | egrep -v commands$ | sort; }
 caskCommands () { $Cask | perl -ne '/^ [-] ([a-z]+):/ && print "$1\n";' | sort; }
-allCommands ()  { { brewCommands && caskCommands; } | sort -u | awk NF | column; }
+allCommands ()  { { brewCommands && caskCommands; } | sort -u | column; }
 
 provides () {
   local cellar="$(brew --cellar)"
@@ -29,12 +29,12 @@ case "$1" in
                   files) shift && [[ $# -gt 0 ]] && $Brew list --verbose "$@" ;;
                provides) shift && [[ $# -gt 0 ]] && provides "$@" ;;
                  relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
-                 search) shift && ( $Brew search ; $Cask search ) | ag "$@" | sort -u ;;
+                 search) shift && $Brew search | ag "$@" | sort -u ;;
                      up) shift ; $Brew update ; $Brew upgrade --cleanup ;;
                      ls) shift && ( $Brew ls | sort && echo && $Cask ls | sort ) ;;
+               outdated) shift && ( $Brew outdated "$@" && $Cask outdated "$@" ) ;;
                 install) shift && install "$@" ;;
 audit|cleanup|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
    fetch|home|info|edit) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
-      alfred|checklinks) $Cask "$@" ;;
                       *) $Brew "$@" ;;
 esac
