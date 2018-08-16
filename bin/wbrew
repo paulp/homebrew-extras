@@ -19,11 +19,6 @@ provides () {
   done
 }
 
-install () {
-  $Brew options "$@"
-  $Brew install "$@" 2>/dev/null || $Cask install "$@" 2>/dev/null
-}
-
 case "$1" in
                      "") printf "Usage: $(basename $0) [options] where options include:\n" && allCommands ;;
                   files) shift && [[ $# -gt 0 ]] && $Brew list --verbose "$@" ;;
@@ -33,8 +28,7 @@ case "$1" in
                      up) shift ; $Brew update ; $Brew upgrade --cleanup ;;
                      ls) shift && ( $Brew ls | sort && echo && $Cask ls | sort ) ;;
                outdated) shift && ( $Brew outdated "$@" && $Cask outdated "$@" ) ;;
-                install) shift && install "$@" ;;
-audit|cleanup|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
+        audit|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
    fetch|home|info|edit) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
                       *) $Brew "$@" ;;
 esac
