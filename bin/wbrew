@@ -25,7 +25,7 @@ case "$1" in
                provides) shift && [[ $# -gt 0 ]] && provides "$@" ;;
                  relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
                  search) shift && $Brew search | ag "$@" | sort -u ;;
-                     up) shift ; $Brew update ; $Brew upgrade --cleanup ;;
+                     up) shift ; $Brew update ; $Brew upgrade ; $Brew cleanup ;;
                      ls) shift && ( $Brew ls | sort && echo && $Cask ls | sort ) ;;
                outdated) shift && ( $Brew outdated "$@" && $Cask outdated "$@" ) ;;
         audit|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
