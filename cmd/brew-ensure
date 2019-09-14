@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-#
-
-egrep -q "^${1}$" < <(brew list) || brew install "$@"

@@ -2,20 +2,29 @@ require 'formula'
 
 class Coursier < Formula
   desc "Coursier launcher."
-  homepage "http://get-coursier.io"
-  version "1.0.1"
-  url "https://github.com/coursier/coursier/raw/v1.0.1/coursier", :using => :nounzip
-  sha256 "23aa05a84a9df5d84b76be40659300bfcb367d8a1b4307908f89ba3fc6dac1e6"
+  homepage "https://get-coursier.io"
+  version "2.0.0-RC3-4"
+  url "https://github.com/coursier/coursier/releases/download/v2.0.0-RC3-4/coursier"
+  sha256 "a5dc05a63379dc2a2ce3d12373737f440ef956472042e080fc8cc62d7dc594f2"
+  bottle :unneeded
+
+  option "without-zsh-completions", "Disable zsh completion installation"
 
   depends_on :java => "1.8+"
 
   def install
+    unless build.without? "zsh-completion"
+      FileUtils.mkdir_p "completions/zsh"
+      system "bash", "-c", "bash ./coursier --completions zsh > completions/zsh/_coursier"
+      zsh_completion.install "completions/zsh/_coursier"
+    end
+
     bin.install 'coursier'
   end
 
   test do
     ENV["COURSIER_CACHE"] = "#{testpath}/cache"
-    output = shell_output("#{bin}/coursier launch io.get-coursier:echo:1.0.1 -- foo")
+    output = shell_output("#{bin}/coursier launch io.get-coursier:echo:1.0.2 -- foo")
     assert_equal ["foo\n"], output.lines
   end
 end
