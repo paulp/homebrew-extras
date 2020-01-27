@@ -1,14 +1,13 @@
 class CheckerFramework < Formula
   desc "Custom pluggable types for Java"
   homepage "http://checkerframework.org/"
-  url "http://types.cs.washington.edu/checker-framework/current/checker-framework-2.11.0.zip"
-  version "2.11.0"
-  sha256 "64559f40085f485cefe2edb4d9ac5b8cf0ede87cb4c6f2d4adf5b88f4083e840"
-  depends_on :java => "1.8"
+  url "https://checkerframework.org/checker-framework-3.1.0.zip"
+  sha256 "7e5c382fb3a491beefd4a1bcf679aa5ae7b0f182d04e77f1456629507e97f9e7"
+  depends_on :java => "1.8+"
 
   def install
-    libexec.install Dir['*']
-    (bin/'checker-javac').write <<~EOS
+    libexec.install Dir["*"]
+    (bin/"checker-javac").write <<~EOS
       #!/usr/bin/env bash
       #
 
