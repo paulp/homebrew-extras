@@ -1,8 +1,8 @@
 class Z3 < Formula
   desc "High-performance theorem prover (built with java bindings enabled)"
   homepage "https://github.com/Z3Prover/z3"
-  url "https://github.com/Z3Prover/z3/releases/download/z3-4.7.1/z3-4.7.1.tar.gz"
-  sha256 "d165d68739ee15b4b73c0498225982d5a048e909e5e851b73fa6bcc7cfe228ab"
+  url "https://github.com/Z3Prover/z3/archive/z3-4.8.7.tar.gz"
+  sha256 "8c1c49a1eccf5d8b952dadadba3552b0eac67482b8a29eaad62aa7343a0732c3"
   head "https://github.com/Z3Prover/z3.git"
 
   depends_on :java => "1.8"
