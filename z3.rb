@@ -8,7 +8,7 @@ class Z3 < Formula
   depends_on :java => "1.8+"
 
   def install
-  	python3 = Formula["python@3.8"].opt_bin/"python3"
+    python3 = Formula["python"].bin/"python3"
   	xy = Language::Python.major_minor_version python3
   	system python3, "scripts/mk_make.py",
   	                 "--prefix=#{prefix}",
