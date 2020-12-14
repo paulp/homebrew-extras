@@ -24,7 +24,7 @@ class Coursier < Formula
 
   test do
     ENV["COURSIER_CACHE"] = "#{testpath}/cache"
-    output = shell_output("#{bin}/coursier launch io.get-coursier:echo:1.0.2 -- foo")
+    output = shell_output("#{bin}/coursier launch io.get-coursier:echo:1.0.4 -- foo")
     assert_equal ["foo\n"], output.lines
   end
 end
