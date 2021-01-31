@@ -10,7 +10,7 @@ class Coursier < Formula
 
   option "without-zsh-completions", "Disable zsh completion installation"
 
-  depends_on :java => "1.8+"
+  depends_on "openjdk@8"
 
   def install
     unless build.without? "zsh-completion"
