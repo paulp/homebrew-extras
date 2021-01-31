@@ -3,9 +3,9 @@ require 'formula'
 class Coursier < Formula
   desc "Coursier launcher."
   homepage "https://get-coursier.io"
-  version "2.0.0-RC6-12"
-  url "https://github.com/coursier/coursier/releases/download/v2.0.0-RC6-12/coursier"
-  sha256 "5c3d242d98c8af3cbee38f930137d54634341b7411de971a20c76286ddb831dc"
+  version "2.0.7"
+  url "https://github.com/coursier/coursier/releases/download/v2.0.7/coursier"
+  sha256 "d3ba37e53d9cfa778af481c7099cd1dc485242283e9d2c5c2753f3859908cbd4"
   bottle :unneeded
 
   option "without-zsh-completions", "Disable zsh completion installation"
