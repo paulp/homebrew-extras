@@ -3,7 +3,7 @@ class CheckerFramework < Formula
   homepage "http://checkerframework.org/"
   url "https://checkerframework.org/checker-framework-3.1.0.zip"
   sha256 "7e5c382fb3a491beefd4a1bcf679aa5ae7b0f182d04e77f1456629507e97f9e7"
-  depends_on :java => "1.8+"
+  depends_on "openjdk"
 
   def install
     libexec.install Dir["*"]

@@ -5,7 +5,7 @@ class Z3 < Formula
   sha256 "6962facdcdea287c5eeb1583debe33ee23043144d0e5308344e6a8ee4503bcff"
   head "https://github.com/Z3Prover/z3.git"
 
-  depends_on :java => "1.8+"
+  depends_on "openjdk"
 
   def install
     python3 = Formula["python"].bin/"python3"
