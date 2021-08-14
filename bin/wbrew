@@ -1,34 +1,13 @@
 #!/usr/bin/env bash
 #
-# A wrapper for brew and brew cask.
+# A wrapper for brew.
 #
 
-Brew="$(which brew)"
-Cask="$Brew cask"
-CaskRegex="^ [-] ([a-z]*):.*"
-
-brewCommands () { $Brew commands | egrep -v commands$ | sort; }
-caskCommands () { $Cask | perl -ne '/^ [-] ([a-z]+):/ && print "$1\n";' | sort; }
-allCommands ()  { { brewCommands && caskCommands; } | sort -u | column; }
-
-provides () {
-  local cellar="$(brew --cellar)"
-  cd "$cellar"
-  find * -type f -name "$1" | while read path; do
-    printf "%-20s %s\n" "${path%%/*}" "$cellar/$path"
-  done
-}
-
 case "$1" in
-                     "") printf "Usage: $(basename $0) [options] where options include:\n" && allCommands ;;
-                  files) shift && [[ $# -gt 0 ]] && $Brew list --verbose "$@" ;;
-               provides) shift && [[ $# -gt 0 ]] && provides "$@" ;;
-                 relink) shift && $Brew unlink "$@" && $Brew link "$@" ;;
-                 search) shift && $Brew search | ag "$@" | sort -u ;;
-                     up) shift ; $Brew update ; $Brew upgrade ; $Brew cleanup ;;
-                     ls) shift && ( $Brew ls | sort && echo && $Cask ls | sort ) ;;
-               outdated) shift && ( $Brew outdated "$@" && $Cask outdated "$@" ) ;;
-        audit|dr|doctor) $Brew "$@" ; echo "" ; $Cask "$@" ;;
-   fetch|home|info|edit) $Brew "$@" 2>/dev/null || $Cask "$@" 2>/dev/null ;;
-                      *) $Brew "$@" ;;
+         "") printf "Usage: $(basename $0) [options]\n" ;;
+      files) shift && [[ $# -gt 0 ]] && brew list --verbose "$@" ;;
+   provides) shift && find "$(brew --cellar)" ! -type d -name "$@" ;;
+     relink) shift && brew unlink "$@" && brew link "$@" ;;
+         up) shift ; brew update ; brew upgrade --no-quarantine "$@" ; brew cleanup ;;
+          *) brew "$@" ;;
 esac

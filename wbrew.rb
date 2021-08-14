@@ -2,7 +2,7 @@ require 'formula'
 
 class Wbrew < Formula
   url "https://raw.githubusercontent.com/paulp/homebrew-extras/master/bin/wbrew"
-  sha256 "94cd7c262b099d35070dfaf4bc678ffc545ab2d8e1aea0865f20320e7681c65a"
+  sha256 "b524935cc8a060ca81849e658b0ba3932b768c5dade8320f043722ce0ebc9057"
   version "20190913"
 
   def install
